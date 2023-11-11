@@ -2,42 +2,87 @@
 #include <stdlib.h>
 #include <locale.h>
 
-void input_array(int size, int* array)
+
+int input_array_int(int* array, int size)
 {
+    int count = 0;
     printf("Введите элементы массива:\n");
     for (int i = 0; i < size; i++)
     {
-        printf("Array[%d] = ", i+1);
+        printf("Array[%d] = ", i + 1);
         scanf("%d", &array[i]);
+        count++;
     }
-    
+
+    return count;
 }
 
-int delete_5_element(int size, int* array)
+int input_array_double(double* array, int size)
 {
-    /*Происходит удаление каждого пятого элемента из исходного массива.
-    j используется для индексирования нового массива во время копирования элементов,
-    пропуская каждый пятый элемент.*/
-    for (int i = 0, j = 0; i < size; i++)
+    int count = 0;
+    printf("Введите элементы массива:\n");
+    for (int i = 0; i < size; i++)
     {
-        if ((i + 1) % 5 != 0)
-        {
-            array[j++] = array[i];
-        }
+        printf("Array[%d] = ", i + 1);
+        scanf("%lf", &array[i]);
+        count++;
     }
+
+    return count;
+}
+
+int output_array_int(int* array,int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
 
     return *array;
 }
 
-int output_array(int new_size, int* new_array)
+int output_array_double(double* array,int size)
 {
-    printf("Результат после удаления каждого пятого элемента:\n");
-    for (int i = 0; i < new_size; i++)
+    for (int i = 0; i < size; i++)
     {
-        printf("%d ", new_array[i]);
+        printf("%lf ", array[i]);
     }
+    printf("\n");
     
-    return *new_array;
+    return *array;
+}
+
+int output_array_int_table(int* array, int size, int width)
+{    
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", array[i]);
+        if ((i + 1) % width == 0)
+        {
+            printf("\n");
+        }
+    }
+
+    printf("\n");
+
+    return *array;
+}
+
+int output_array_double_table(double* array, int size, int width)
+{    
+    for (int i = 0; i < size; i++)
+    {
+        printf("%lf ", array[i]);
+        if ((i + 1) % width == 0)
+        {
+            printf("\n");
+        }
+    }
+
+    printf("\n");
+
+    return *array;
 }
 
 int main()
@@ -46,27 +91,17 @@ int main()
     int size;
     printf("Введите размер массива: ");
     scanf("%d", &size);
+
+    int width;
+    printf("Введите ширину стоблца ");
+    scanf("%d", &width);
     
-    if(size<=0)
-    {
-        printf("Неккоректный размер массива\n");
-        return 1;
-    }
+    int* array = (int*)malloc(size * sizeof(int));
 
-    int* array = (int*)malloc(size * sizeof(int)); // Выделение памяти для массива
+    input_array_int(array, size);
 
-    input_array(size, array);//Функция ввода массива
-
-    int new_size = size - (size / 5); // Размер массива после удаления каждого пятого элемента
-
-    delete_5_element(size, array);
-
-    int* new_array = (int*)realloc(array, new_size * sizeof(int)); // Перевыделение памяти для нового размера массива
-
-    output_array(new_size, new_array);
-    printf("\n");
-
-    free(new_array); // Освобождение памяти нового массива
+    output_array_int_table(array, size, width);
 
     return 0;
+
 }
