@@ -1,1 +1,167 @@
+//5.1
+//Угол между векторами A(n) и B(n)
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <math.h>
+
+int input_array_double(double* array, int size)
+{
+    int count = 0;
+    printf("Введите координаты вектора:\n");
+    for (int i = 0; i < size; i++)
+    {
+        printf("[%d] = ", i + 1);
+        scanf("%lf", &array[i]);
+        count++;
+    }
+
+    return count;
+}
+
+double sumv(double *A, double *B, int n)
+{
+    double sum = 0;
+    for (int i = 0; i < n; i++)
+        sum += A[i] * B[i];
+    return sum;
+}
+ 
+double GetAngle(double *A, double *B, int n)
+{
+    return (sumv(A, B, n) / (sqrt(sumv(A, A, n)) * sqrt(sumv(B, B, n))));
+}
+
+int main()
+{
+    char *locale = setlocale(LC_ALL, "");
+    int size;
+    printf("Введите размерность: ");
+    scanf("%d", &size);
+
+    double* A = (double*)malloc(size * sizeof(int));
+
+    input_array_double(A, size);
+
+    double* B = (double*)malloc(size * sizeof(int));
+
+    input_array_double(B, size);
+
+    double ans = GetAngle(A, B, size);
+    printf("%lf\n", ans);
+
+    return 0;
+}
+
+//5.2
+//
+...
+
+//5.3
+//
+...
+
+//5.4
+//В трехмерном массиве K (LxMxN), состоящем из нулей и единиц,
+//хранится сеточное изображение некоторого трехмерного тела.
+//Получить в двумерных массивах три проекции (тени) этого тела
+
+#include <stdio.h>
+#define L 3
+#define M 3
+#define N 3
+
+void get_projections(int K[L][M][N], int projXY[M][N], int projXZ[L][N], int projYZ[L][M])
+{
+    // Проекция на плоскость XY
+    for (int i = 0; i < M; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            int max = 0;
+            for (int k = 0; k < L; k++)
+            {
+                if (K[k][i][j] > max)
+                    max = K[k][i][j];
+            }
+            projXY[i][j] = max;
+        }
+    }
+
+    // Проекция на плоскость XZ
+    for (int i = 0; i < L; i++)
+    {
+        for (int j = 0; j < N; j++) 
+        {
+            int max = 0;
+            for (int k = 0; k < M; k++) 
+            {
+                if (K[i][k][j] > max) 
+                    max = K[i][k][j];
+            }
+            projXZ[i][j] = max;
+        }
+    }
+
+    // Проекция на плоскость YZ
+    for (int i = 0; i < L; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+        {
+            int max = 0;
+            for (int k = 0; k < N; k++) 
+            {
+                if (K[i][j][k] > max) 
+                    max = K[i][j][k];
+            }
+            projYZ[i][j] = max;
+        }
+    }
+}
+
+int main() 
+{
+    int K[L][M][N] =
+    {
+    {{1, 0, 0}, {1, 1, 0}, {0, 0, 0}},
+    {{1, 0, 0}, {1, 1, 0}, {0, 0, 0}},
+    {{1, 1, 1}, {0, 1, 0}, {0, 0, 0}}
+    };
+
+    int projXY[M][N];
+    int projXZ[L][N];
+    int projYZ[L][M];
+
+    get_projections(K, projXY, projXZ, projYZ);
+
+    printf("Проекция на плоскость XY:\n");
+    for (int i = 0; i < M; i++) 
+    {
+        for (int j = 0; j < N; j++) 
+            printf("%d ", projXY[i][j]);
+    printf("\n");
+    }
+
+    printf("\n");
+
+    printf("Проекция на плоскость XZ:\n");
+    for (int i = 0; i < L; i++) 
+    {
+        for (int j = 0; j < N; j++) 
+            printf("%d ", projXZ[i][j]);
+        printf("\n");
+    }
+
+    printf("\n");
+
+    printf("Проекция на плоскость YZ:\n");
+    for (int i = 0; i < L; i++) 
+    {
+        for (int j = 0; j < M; j++) 
+            printf("%d ", projYZ[i][j]);
+        printf("\n");
+    }
+
+    return 0;
+}
