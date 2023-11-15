@@ -1,4 +1,4 @@
-//
+//Функции для обработки динамических матриц
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -109,7 +109,7 @@ int main()
 }
 
 //Код хирьянова
-#include <stdio.h>
+// #include <stdio.h>
 // #include <stdlib.h>
 
 // void dynamic_array_print(int **A, size_t N, size_t M)
